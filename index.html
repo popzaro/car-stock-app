@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เพิ่มข้อมูลรถ</title>
+  <style>
+    body {
+      background-color: #FFEB3B;
+      font-family: sans-serif;
+      color: black;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-size: 1rem;
+    }
+    input {
+      background-color: #FFF176;
+    }
+    button {
+      background-color: black;
+      color: #FFEB3B;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>เพิ่มข้อมูลรถ</h1>
+  <form id="carForm">
+    <input type="text" id="brand" placeholder="ยี่ห้อ" required />
+    <input type="text" id="model" placeholder="รุ่น" required />
+    <input type="text" id="year" placeholder="ปี" />
+    <input type="text" id="color" placeholder="สี" />
+    <input type="text" id="mileage" placeholder="เลขไมล์" />
+    <input type="text" id="price" placeholder="ราคา" />
+    <button type="submit">บันทึกข้อมูลรถ</button>
+  </form>
+  <script>
+    const form = document.getElementById('carForm');
+    const SHEETDB_URL = 'https://sheetdb.io/api/v1/xxxxxxxxxxxxxxxx'; // แก้เป็น URL ของคุณ
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        brand: document.getElementById('brand').value,
+        model: document.getElementById('model').value,
+        year: document.getElementById('year').value,
+        color: document.getElementById('color').value,
+        mileage: document.getElementById('mileage').value,
+        price: document.getElementById('price').value,
+      };
+
+      try {
+        const res = await fetch(SHEETDB_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: [data] })
+        });
+
+        if (res.ok) {
+          alert('บันทึกข้อมูลเรียบร้อย');
+          form.reset();
+        } else {
+          alert('เกิดข้อผิดพลาด');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('ไม่สามารถเชื่อมต่อได้');
+      }
+    });
+  </script>
+</body>
+</html>
